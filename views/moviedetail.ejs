@@ -18,6 +18,8 @@
         <p>Rating: <%= movie.rating%>%</p>
         <p>Production cost: <%= movie.production%>M</p>
         <p>Description: <%= movie.description%></p>
+        <p>Image: <%- locals.movie != undefined && locals.movie.imageName != undefined ? `<br><br><img src="/images/${locals.movie.imageName}" style="width:100px;">` : 'No image' %></p>
+
     <%} %>
 </div>
 

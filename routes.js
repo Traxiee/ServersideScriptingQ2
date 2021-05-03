@@ -92,7 +92,7 @@ module.exports = (app) => {
 
             if(req.files != undefined && req.files.image != undefined)
             {
-                await req.files.image.mv(`./public/images${req.files.image.name}`)
+                await req.files.image.mv(`./public/images/${req.files.image.name}`)
                 movie.imageName = req.files.image.name;
             }
 
@@ -169,13 +169,15 @@ module.exports = (app) => {
             }
     
             if (message.length == 0) {
-
-                //Delete old picture
-                //let gammeltbillednavn = './images/f120d1e-a1c3.jpg';
-                //if(fs.existsSync(gammeltbillednavn)){
-                //    fs.unlinkSync(gammeltbillednavn);
-                //} 
-                //req.body.imageName = '';
+                let movie = await Movie.findById(req.params.id).exec();
+                if(fs.existsSync('./public/images/' + movie.imageName)){
+                    fs.rmSync('./public/images/' + movie.imageName);
+                } 
+                if(req.files != undefined && req.files.image != undefined)
+            {
+                await req.files.image.mv(`./public/images/${req.files.image.name}`)
+                req.body.imageName = req.files.image.name;
+            }
                 
 
 
@@ -195,11 +197,14 @@ module.exports = (app) => {
     
     
     
-            res.redirect('/books');
         });
 
 
         app.get('/movies/delete/:id', async (req, res) => {
+            let movie = await Movie.findById(req.params.id).exec();
+                if(fs.existsSync('./public/images/' + movie.imageName)){
+                    fs.rmSync('./public/images/' + movie.imageName);
+                } 
             await Movie.findByIdAndDelete(req.params.id);
             res.redirect('/movies');
         });

@@ -24,9 +24,9 @@
         <input type="text" name="description" value="<%= locals.movie ? locals.movie.description : '' %>">
         <p>Image</p>
         <input type="file" name="image">
-        <%- locals.movie != undefined && locals.movie.imageName != '' ? `<img src="/images/${locals.movie.imageName}" style="width:100px;">` : '' %>
-        <p>Watched?:</p>
-        <input type="checkbox" name="watched" <%= locals.movie && locals.movie.watched ? 'checked' : '' %>>
+
+        <%- locals.movie != undefined && locals.movie.imageName != undefined ? `<br><br><img src="/images/${locals.movie.imageName}" style="width:100px;">` : '' %>
+        <p>Watched?: <input type="checkbox" name="watched" <%= locals.movie && locals.movie.watched ? 'checked' : '' %>></p>
         <button>Send</button>
         <a href="/movies">Cancel</a>
         <span><%= locals.message %></span>
