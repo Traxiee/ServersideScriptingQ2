@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+    
+    <div class="fancy">
+    <form method="post">
+        <p>Title:</p>
+        <input type="text" name="title" value="<%= locals.movie ? locals.movie.title : '' %>">
+        <p>Runtime:</p>
+        <input type="text" name="runtime" value="<%= locals.movie ? locals.movie.runtime : '' %>">
+        <p>Rating:</p>
+        <input type="text" name="rating" value="<%= locals.movie ? locals.movie.rating : '' %>">
+        <p>Production:</p>
+        <input type="text" name="production" value="<%= locals.movie ? locals.movie.production : '' %>">
+        <p>Description:</p>
+        <input type="text" name="description" value="<%= locals.movie ? locals.movie.description : '' %>">
+        <p>Watched?:</p>
+        <input type="checkbox" name="watched" <%= locals.movie && locals.movie.watched ? 'checked' : '' %>>
+        <button>Send</button>
+        <a href="/movies">Cancel</a>
+        <span><%= locals.message %></span>
+    </form>
+</div>
+
+<div class="fancybutlonger">
+<% if( locals.movies && locals.movies.length > 0) { %>
+<h1>all movies</h1>
+<table>
+    <tr>
+        <th>Actions</th>
+        <th>Title</th>
+        <th>Runtime</th>
+        <th>Rating</th>
+        <th>Production</th>
+        <th>Description</th>
+        <th>Watched</th>
+    </tr>
+    
+    <% movies.forEach(movie => { %>
+        <tr>
+            <td>
+                <a href="/movies/edit/<%=movie.id%>">Update</a>
+                <a href="/movies/delete/<%=movie.id%>" onclick="return confirm('Delete movie?')">Delete</a>
+            </td>
+            <td><%=movie.title%></td>
+            <td><%=movie.runtime%></td>
+            <td><%=movie.rating%></td>
+            <td><%=movie.production%></td>
+            <td><%=movie.description%></td>
+            <td><%=movie.watched%></td>
+        </tr>
+    <%});%>
+</table>
+<%} %>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -8,16 +8,18 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
 <%- include('partials/nav.ejs') %>
 
-    <% if(typeof moviess !='undefined' ) { moviess.forEach(element=> { %>
-        <div class="fancy">
-            <p>Title: <%= element.title%>
-            </p>
-            <a href="/moviedetail/<%= element._id%>">Details</a>
-        </div>
-        <%}); } %>
+    <div class="fancy">
+    <% if(typeof movie !='undefined') { %>
+        <p>Title: <%= movie.title%></p>
+        <p>Runtime: <%= movie.runtime%> Minutes</p>
+        <p>Watched: <%= movie.watched%></p>
+        <p>Rating: <%= movie.rating%>%</p>
+        <p>Production cost: <%= movie.production%>M</p>
+        <p>Description: <%= movie.description%></p>
+    <%} %>
+</div>
 
 </body>
 </html>
