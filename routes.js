@@ -1,4 +1,5 @@
 const Movie = require('./models/movieModel');
+const fs = require('fs');
 
 async function getMovies(){
 	return await Movie
@@ -88,6 +89,13 @@ module.exports = (app) => {
         movie.watched = (req.body.watched == "on" ? true : false);
 
         if(message.length == 0) {
+
+            if(req.files != undefined && req.files.image != undefined)
+            {
+                await req.files.image.mv(`./public/images${req.files.image.name}`)
+                movie.imageName = req.files.image.name;
+            }
+
         
         await movie.save();
         res.redirect('/movies');
@@ -161,6 +169,18 @@ module.exports = (app) => {
             }
     
             if (message.length == 0) {
+
+                //Delete old picture
+                //let gammeltbillednavn = './images/f120d1e-a1c3.jpg';
+                //if(fs.existsSync(gammeltbillednavn)){
+                //    fs.unlinkSync(gammeltbillednavn);
+                //} 
+                //req.body.imageName = '';
+                
+
+
+
+
                 req.body.watched = (req.body.watched == "on" ? true : false);
                 await Movie.findByIdAndUpdate(req.params.id, req.body);
                 res.redirect('/movies');

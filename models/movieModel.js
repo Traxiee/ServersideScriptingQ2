@@ -7,7 +7,8 @@ const Movie = new Schema({
     watched: {type:Boolean},
     rating: {type:Number},
     production: {type:Number},
-    description: {type:String}
+    description: {type:String},
+    imageName:{type:String}
 });
 
 module.exports = mongoose.model("Movie", Movie, 'movies')
