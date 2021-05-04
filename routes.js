@@ -1,11 +1,18 @@
 const Movie = require('./models/movieModel');
 const fs = require('fs');
+const path = require('path');
+const { v4: uuidv4} = require('uuid');
 
 async function getMovies(){
 	return await Movie
 						.find()
 						.collation({locale:'da'})
 						.sort({'title':'asc'});
+}
+
+
+function uniqueName(filename) {
+    return uuidv4() + path.extname(filename);
 }
 
 
@@ -70,6 +77,9 @@ module.exports = (app) => {
         if(movie.description == ""){
             message.push('Movie needs a description')
         }
+        if(req.files == undefined){
+            message.push('Movie must contain a picture')
+        }
         if(isNaN(req.body.runtime))
         {
             message.push('Runtime must contain numbers')
@@ -92,8 +102,9 @@ module.exports = (app) => {
 
             if(req.files != undefined && req.files.image != undefined)
             {
-                await req.files.image.mv(`./public/images/${req.files.image.name}`)
-                movie.imageName = req.files.image.name;
+                let filename = uniqueName(req.files.image.name);
+                await req.files.image.mv(`./public/images/${filename}`)
+                movie.imageName = filename;
             }
 
         
@@ -170,13 +181,17 @@ module.exports = (app) => {
     
             if (message.length == 0) {
                 let movie = await Movie.findById(req.params.id).exec();
+                
+                if(req.files != undefined && req.files.image != undefined)
+            {
                 if(fs.existsSync('./public/images/' + movie.imageName)){
                     fs.rmSync('./public/images/' + movie.imageName);
                 } 
-                if(req.files != undefined && req.files.image != undefined)
-            {
-                await req.files.image.mv(`./public/images/${req.files.image.name}`)
-                req.body.imageName = req.files.image.name;
+
+                let filename = uniqueName(req.files.image.name);
+                await req.files.image.mv(`./public/images/${filename}`)
+                req.body.imageName = filename;
+                
             }
                 
 
